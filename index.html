@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte de Objetivos — Nexus Patio Tech · Abril 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#1b5e20;--green-l:#e8f5e9;--green-m:#43a047;
+  --amber:#a05200;--amber-l:#fff8e1;--amber-m:#fb8c00;
+  --red:#b71c1c;--red-l:#ffebee;--red-m:#e53935;
+  --blue:#0d47a1;--blue-l:#e3f2fd;--blue-m:#1976d2;
+  --purple:#4a148c;--purple-l:#f3e5f5;--purple-m:#7b1fa2;
+  --teal:#006064;--teal-l:#e0f7fa;--teal-m:#0097a7;
+  --orange:#e65100;--orange-l:#fff3e0;--orange-m:#ef6c00;
+  --gray-l:#f5f7f9;--border:#dde4ea;--card:#fff;
+  --text:#1c2b36;--muted:#546e7a;--light:#78909c;
+  --radius:10px;--shadow:0 1px 3px rgba(0,0,0,.06);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--gray-l);color:var(--text);font-size:13px;line-height:1.55;padding:28px 24px;max-width:1020px;margin:0 auto;}
+
+/* ─── HEADER ─── */
+.rh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px;padding-bottom:18px;border-bottom:2px solid var(--border);}
+.rh h1{font-size:20px;font-weight:600;line-height:1.2;}
+.rh .sub{font-size:11.5px;color:var(--muted);margin-top:4px;}
+.date-pill{background:var(--blue);color:#fff;font-size:11px;font-weight:600;padding:5px 14px;border-radius:20px;white-space:nowrap;}
+
+/* ─── LEGEND BADGES ─── */
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.leg{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:5px;font-size:11px;font-weight:500;}
+.leg-march{background:#fff3e0;color:var(--orange);border:1px solid #ffcc80;}
+.leg-april{background:var(--blue-l);color:var(--blue);border:1px solid #90caf9;}
+.leg-both{background:#f3e5f5;color:var(--purple);border:1px solid #ce93d8;}
+.leg-new{background:#e8f5e9;color:var(--green);border:1px solid #a5d6a7;}
+.leg-risk{background:var(--red-l);color:var(--red);border:1px solid #ef9a9a;}
+.leg-overdue{background:#fce4ec;color:#880e4f;border:1px solid #f48fb1;}
+
+/* ─── METRICS ─── */
+.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-bottom:18px;}
+.mc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;text-align:center;box-shadow:var(--shadow);}
+.mc .v{font-size:26px;font-weight:600;line-height:1;margin-bottom:3px;}
+.mc .l{font-size:10px;color:var(--muted);}
+.cv-blue{color:var(--blue-m);}.cv-green{color:var(--green-m);}.cv-amber{color:var(--amber-m);}
+.cv-red{color:var(--red-m);}.cv-purple{color:var(--purple-m);}.cv-orange{color:var(--orange-m);}
+
+/* ─── ALERTS ─── */
+.alerts{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px;}
+.at{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:5px;font-size:11px;font-weight:500;}
+.at-r{background:var(--red-l);color:var(--red);border:1px solid #ffcdd2;}
+.at-a{background:var(--amber-l);color:var(--amber);border:1px solid #ffe0b2;}
+.at-b{background:var(--blue-l);color:var(--blue);border:1px solid #bbdefb;}
+.at-g{background:var(--green-l);color:var(--green);border:1px solid #c8e6c9;}
+
+/* ─── SECTION LABELS ─── */
+.slabel{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--light);margin-bottom:9px;margin-top:24px;padding-left:2px;}
+
+/* ─── SUMMARY TABLE ─── */
+.stbl{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:26px;box-shadow:var(--shadow);}
+.stbl th{text-align:left;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:8px 11px;background:var(--gray-l);border-bottom:1px solid var(--border);}
+.stbl td{padding:8px 11px;border-bottom:1px solid #f0f3f6;vertical-align:middle;font-size:11.5px;}
+.stbl tr:last-child td{border-bottom:none;}
+.stbl tr:hover td{background:#fafbfc;}
+.stbl tr.march-row td{border-left:3px solid var(--orange-m);}
+.stbl tr.april-row td{border-left:3px solid var(--blue-m);}
+.stbl tr.both-row td{border-left:3px solid var(--purple-m);}
+.stbl tr.new-row td{border-left:3px solid var(--green-m);background:#fafff8;}
+
+/* bars */
+.bt{background:#e4eaf0;border-radius:4px;height:6px;width:120px;overflow:hidden;display:inline-block;vertical-align:middle;}
+.bf{height:6px;border-radius:4px;}
+.bg-green{background:var(--green-m);}.bg-amber{background:var(--amber-m);}.bg-red{background:var(--red-m);}
+.bg-blue{background:var(--blue-m);}.bg-purple{background:var(--purple-m);}.bg-teal{background:var(--teal-m);}
+.bg-orange{background:var(--orange-m);}
+.bc{display:flex;align-items:center;gap:7px;}
+.pn{font-size:11.5px;font-weight:600;min-width:32px;display:inline-block;text-align:right;vertical-align:middle;}
+
+/* status badges */
+.st{display:inline-block;font-size:9px;font-weight:600;padding:2px 8px;border-radius:9px;white-space:nowrap;}
+.st-h{background:var(--green-l);color:var(--green);}
+.st-c{background:var(--amber-l);color:var(--amber);}
+.st-r{background:var(--red-l);color:var(--red);}
+.st-n{background:var(--blue-l);color:var(--blue);}
+.st-ok{background:#e8f5e9;color:#1b5e20;}
+.st-p{background:#fff8e1;color:#e65100;}
+.st-new{background:var(--green-l);color:var(--green);}
+
+/* period tag */
+.per{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border-radius:8px;white-space:nowrap;margin-left:3px;}
+.per-m{background:#fff3e0;color:var(--orange);}
+.per-a{background:var(--blue-l);color:var(--blue);}
+.per-b{background:var(--purple-l);color:var(--purple);}
+.per-new{background:var(--green-l);color:var(--green);}
+
+.nl{font-size:9.5px;color:var(--blue-m);text-decoration:none;}
+.nl:hover{text-decoration:underline;}
+
+/* ─── OBJ CARDS ─── */
+.ogrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:26px;}
+.oc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;box-shadow:var(--shadow);}
+.oc.full{grid-column:span 2;}
+.oc.lmarch{border-left:3px solid var(--orange-m);}
+.oc.lapril{border-left:3px solid var(--blue-m);}
+.oc.lboth{border-left:3px solid var(--purple-m);}
+.oc.lnew{border-left:3px solid var(--green-m);background:#fafff8;}
+.oc.lrisk{border-left:3px solid var(--red-m);}
+
+.oh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;gap:9px;}
+.on{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.otb{flex:1;}
+.ot{font-size:12.5px;font-weight:600;line-height:1.3;}
+.om{font-size:10px;color:var(--muted);margin-top:2px;}
+.op{font-size:16px;font-weight:600;flex-shrink:0;}
+.obar{margin:6px 0 9px;}
+.obar .bt{width:100%;}
+
+/* task rows */
+.tl{list-style:none;}
+.tr{display:flex;align-items:flex-start;gap:6px;padding:3px 0;font-size:11.5px;line-height:1.4;}
+.td2{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4.5px;}
+.dg{background:#b0bec5;}.dr{background:var(--red-m);}.da{background:var(--amber-m);}
+.db{background:var(--blue-m);}.dg2{background:var(--green-m);}.dp{background:var(--purple-m);}
+.dt{background:var(--teal-m);}
+
+.tx-done{color:#90a4ae;text-decoration:line-through;}
+.tx-p{color:var(--text);}
+.tx-new{color:var(--blue);font-weight:500;}
+.tx-alert{color:var(--red);font-weight:500;}
+.tx-warn{color:var(--amber);}
+.tx-ok{color:var(--green);}
+
+.tpct{font-size:9.5px;color:var(--light);margin-left:3px;font-family:'DM Mono',monospace;}
+.tnote{font-size:9.5px;color:#78909c;display:block;margin-left:12px;margin-top:1px;font-style:italic;}
+
+/* days remaining pills */
+.dr-pill{display:inline-flex;align-items:center;font-size:9px;font-weight:600;padding:1px 6px;border-radius:8px;margin-left:5px;font-family:'DM Mono',monospace;}
+.dr-ok{background:#e8f5e9;color:#1b5e20;}
+.dr-warn{background:#fff8e1;color:#a05200;}
+.dr-over{background:#fce4ec;color:#880e4f;}
+
+.divr{border:none;border-top:1px solid #edf0f4;margin:5px 0;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;}
+
+/* continuation note */
+.cont-note{background:#f3e5f5;border:1px solid #ce93d8;border-radius:6px;padding:6px 10px;font-size:10.5px;color:#4a148c;margin-bottom:8px;font-weight:500;}
+.new-note{background:var(--green-l);border:1px solid #a5d6a7;border-radius:6px;padding:6px 10px;font-size:10.5px;color:var(--green);margin-bottom:8px;font-weight:500;}
+
+/* Number circle colors per obj */
+.n1 .on{background:#e3f2fd;color:#0d47a1;} .n1 .op{color:#0d47a1;}
+.n2 .on{background:#e8f5e9;color:#1b5e20;} .n2 .op{color:#2e7d32;}
+.n3 .on{background:#fff3e0;color:#e65100;} .n3 .op{color:#e65100;}
+.n4 .on{background:#fff3e0;color:#e65100;} .n4 .op{color:#e65100;}
+.n5 .on{background:#e0f7fa;color:#006064;} .n5 .op{color:#006064;}
+.n6 .on{background:#f3e5f5;color:#4a148c;} .n6 .op{color:#6a1b9a;}
+.n7 .on{background:#ffebee;color:#b71c1c;} .n7 .op{color:#c62828;}
+.n8 .on{background:#ede7f6;color:#4527a0;} .n8 .op{color:#4527a0;}
+.n9 .on{background:#ffebee;color:#b71c1c;} .n9 .op{color:#c62828;}
+.n10 .on{background:#fff8e1;color:#a05200;} .n10 .op{color:#a05200;}
+.n11 .on{background:#e0f7fa;color:#006064;} .n11 .op{color:#006064;}
+.n12 .on{background:#fce4ec;color:#880e4f;} .n12 .op{color:#880e4f;}
+.n13 .on{background:#e8f5e9;color:#1b5e20;} .n13 .op{color:#2e7d32;}
+.n14 .on{background:#e8eaf6;color:#283593;} .n14 .op{color:#3949ab;}
+.n15 .on{background:#e8f5e9;color:#1b5e20;} .n15 .op{color:#2e7d32;}
+.n16 .on{background:#e8f5e9;color:#1b5e20;} .n16 .op{color:#2e7d32;}
+.n17 .on{background:#e8f5e9;color:#1b5e20;} .n17 .op{color:#2e7d32;}
+.n18 .on{background:#e8f5e9;color:#1b5e20;} .n18 .op{color:#2e7d32;}
+.n19 .on{background:#e8f5e9;color:#1b5e20;} .n19 .op{color:#2e7d32;}
+.n20 .on{background:#e8f5e9;color:#1b5e20;} .n20 .op{color:#2e7d32;}
+
+/* ─── FOOTER ─── */
+.rf{display:flex;justify-content:space-between;font-size:10px;color:var(--light);margin-top:28px;padding-top:14px;border-top:1px solid var(--border);}
+@media print{body{background:#fff;padding:16px;}.oc,.stbl{break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="rh">
+  <div>
+    <h1>Reporte de Objetivos — Equipo de Desarrollo · Nexus Patio Tech</h1>
+    <div class="sub">Scrum Master: Jimmy Nataniel Requena &nbsp;·&nbsp; Fuente: Notion CSV export · PDF Objetivos Gerencia · Reporte verbal<br>Corte: <strong>8 de abril 2026</strong> &nbsp;·&nbsp; Periodo cubierto: <strong>Marzo – Abril 2026</strong></div>
+  </div>
+  <div class="date-pill">8 Abr 2026</div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span class="leg leg-march">🟡 Solo Marzo 2026</span>
+  <span class="leg leg-april">🔵 Solo Abril 2026</span>
+  <span class="leg leg-both">🟣 Continúa Marzo → Abril</span>
+  <span class="leg leg-new">🟢 Nuevo · Solicitado por Gerencia Abril 2026</span>
+  <span class="leg leg-overdue">🔴 Subtarea vencida (días en rojo)</span>
+  <span class="leg leg-risk">⚠ Días restantes disponibles (en verde)</span>
+</div>
+
+<!-- METRICS -->
+<div class="metrics">
+  <div class="mc"><div class="v cv-blue">20</div><div class="l">Objetivos totales</div></div>
+  <div class="mc"><div class="v cv-orange">14</div><div class="l">Continuación Marzo</div></div>
+  <div class="mc"><div class="v cv-green">6</div><div class="l">Nuevos Gerencia Abr</div></div>
+  <div class="mc"><div class="v cv-red">4</div><div class="l">Sin avance / 0%</div></div>
+  <div class="mc"><div class="v cv-amber">8</div><div class="l">En curso</div></div>
+  <div class="mc"><div class="v cv-purple">44%</div><div class="l">Cumplimiento global</div></div>
+</div>
+
+<!-- ALERTS -->
+<div class="alerts">
+  <div class="at at-r">⛔ OBJ 10 (Migración Server) — ausente de Notion</div>
+  <div class="at at-r">KIOSKBOT: 11 de 22 subtareas vencidas sin completar</div>
+  <div class="at at-a">OBJ 3 y OBJ 7: 0% · sin ningún avance registrado</div>
+  <div class="at at-a">OBJ Vikingo: 3 días restantes para subtareas clave</div>
+  <div class="at at-b">OBJ 2: en PR — solo falta deploy @Roy Villarroel</div>
+  <div class="at at-b">6 objetivos nuevos de Gerencia sin subtareas definidas</div>
+  <div class="at at-g">Sushi Tower: 100% técnico — cliente aún sin usar</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 1: OBJETIVOS DE GERENCIA — ABRIL 2026 (NUEVOS)
+     ══════════════════════════════════════════════════════════ -->
+<div class="slabel">Objetivos de Gerencia — Nuevos para Abril 2026 (sin subtareas aún)</div>
+
+<div class="ogrid">
+
+  <!-- G1 -->
+  <div class="oc lnew n15">
+    <div class="oh">
+      <div class="on">G1</div>
+      <div class="otb">
+        <div class="ot">Sistema de tótems con módulo de menús independiente</div>
+        <div class="om">Sin responsable asignado · Sin subtareas · Nuevo Abril 2026
+          <span class="per per-new">🟢 NUEVO</span></div>
+      </div>
+      <div class="op">—</div>
+    </div>
+    <div class="new-note">🟣 Continúa trabajo de Marzo: "Migrar completamente sistemas Tótem" (30% avance) + "Control de Menús en el Merchant Panel" (90%). Este objetivo formaliza y amplía ambos como meta del Gerente para Abril.</div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Separar módulo de menús del sistema Patio — ecosistema propio para tótem</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Implementar manejo de imágenes con caché (tiempos de carga + estabilidad)</span></li>
+      <li class="tr"><span class="td2 dg"></span><span class="tx-p" style="color:var(--muted)">Subtareas pendientes de definir por el equipo técnico</span></li>
+    </ul>
+  </div>
+
+  <!-- G2 -->
+  <div class="oc lnew n16">
+    <div class="oh">
+      <div class="on">G2</div>
+      <div class="otb">
+        <div class="ot">Actualizar integración con Resto Tech</div>
+        <div class="om">Sin responsable asignado · Sin subtareas · Nuevo Abril 2026
+          <span class="per per-new">🟢 NUEVO</span></div>
+      </div>
+      <div class="op">—</div>
+    </div>
+    <div class="new-note">🟣 Relacionado con Marzo: "Integración con Tu Gerente" (0% sin avance). Ahora formalizado con alcance específico por el Gerente para Abril.</div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Optimizar sincronización de menú y estados de pedidos con Resto Tech</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Garantizar operación confiable y trazabilidad del flujo de órdenes</span></li>
+      <li class="tr"><span class="td2 dg"></span><span class="tx-p" style="color:var(--muted)">Subtareas pendientes de definir — contactos Resto Tech por revisar</span></li>
+    </ul>
+  </div>
+
+  <!-- G3 -->
+  <div class="oc lnew n17">
+    <div class="oh">
+      <div class="on">G3</div>
+      <div class="otb">
+        <div class="ot">Entregar el bot de Kiky y Hugo Pizza</div>
+        <div class="om">Sin responsable asignado · Sin subtareas · Nuevo Abril 2026
+          <span class="per per-new">🟢 NUEVO</span></div>
+      </div>
+      <div class="op">—</div>
+    </div>
+    <div class="new-note">🆕 Objetivo completamente nuevo — no existía en Marzo 2026. Primer sprint desde cero.</div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Finalizar bot para Kiky y Hugo Pizza (funcional y estable)</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Preparar para entrega o demostración según lo comprometido</span></li>
+      <li class="tr"><span class="td2 dg"></span><span class="tx-p" style="color:var(--muted)">Subtareas pendientes de definir por el equipo técnico</span></li>
+    </ul>
+  </div>
+
+  <!-- G4 -->
+  <div class="oc lnew n18">
+    <div class="oh">
+      <div class="on">G4</div>
+      <div class="otb">
+        <div class="ot">Terminar el MVP del robot cajero para Cofi</div>
+        <div class="om">Sin responsable asignado · Sin subtareas · Nuevo Abril 2026
+          <span class="per per-new">🟢 NUEVO</span></div>
+      </div>
+      <div class="op">—</div>
+    </div>
+    <div class="new-note">🟣 Continúa y formaliza trabajo de Marzo: "KIOSKBOT" (60% avance, 11/22 subtareas hechas). El Gerente solicita que quede listo para validación comercial.</div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Concluir MVP: flujos principales + interacción base (Darwin → Benjamín)</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Versión suficientemente sólida para validación comercial y operativa</span></li>
+      <li class="tr"><span class="td2 da"></span><span class="tx-warn">Pendiente: POS (30%), Impresora (10%), Pruebas generales (0%)</span></li>
+    </ul>
+  </div>
+
+  <!-- G5 -->
+  <div class="oc lnew n19">
+    <div class="oh">
+      <div class="on">G5</div>
+      <div class="otb">
+        <div class="ot">Terminar el MVP del sistema de tótems en EE.UU. con Stripe</div>
+        <div class="om">Sin responsable asignado · Sin subtareas · Nuevo Abril 2026
+          <span class="per per-new">🟢 NUEVO</span></div>
+      </div>
+      <div class="op">—</div>
+    </div>
+    <div class="new-note">🟣 Continúa trabajo de Marzo: "MVP Tótem USA con Stripe" (10%, sin subtareas). Ahora formalizado como meta de Gerencia con entorno de prueba específico.</div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Completar MVP para mercado USA con integración Stripe</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Pruebas con cuenta Isle of Us de TOAST como entorno inicial</span></li>
+      <li class="tr"><span class="td2 dg"></span><span class="tx-p" style="color:var(--muted)">Subtareas técnicas pendientes de definir con Juan Pablo</span></li>
+    </ul>
+  </div>
+
+  <!-- G6 -->
+  <div class="oc lnew n20">
+    <div class="oh">
+      <div class="on">G6</div>
+      <div class="otb">
+        <div class="ot">Empezar el desarrollo del modo offline para el tótem</div>
+        <div class="om">Sin responsable asignado · Sin subtareas · Nuevo Abril 2026
+          <span class="per per-new">🟢 NUEVO</span></div>
+      </div>
+      <div class="op">—</div>
+    </div>
+    <div class="new-note">🆕 Objetivo completamente nuevo — no existía en Marzo 2026. Primera iteración de arquitectura offline.</div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Iniciar arquitectura para operación del tótem sin internet</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Persistencia temporal de datos + sincronización al reconectar</span></li>
+      <li class="tr"><span class="td2 dg"></span><span class="tx-p" style="color:var(--muted)">Subtareas técnicas pendientes de diseño y arquitectura</span></li>
+    </ul>
+  </div>
+
+</div><!-- /ogrid nuevos -->
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 2: RESUMEN TABLA — TODOS LOS OBJETIVOS
+     ══════════════════════════════════════════════════════════ -->
+<div class="slabel">Resumen general — todos los objetivos (Marzo + Abril 2026)</div>
+<table class="stbl">
+  <thead>
+    <tr>
+      <th>#</th><th>Objetivo</th><th>Período</th><th>Responsable</th>
+      <th>Sub</th><th>Hechas</th><th>% Cumpl.</th><th>Estado</th>
+      <th>Días / Vencimiento</th><th>Notion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- MARCH ONLY -->
+    <tr class="march-row">
+      <td><b>M1</b></td><td>Migrar completamente sistemas Tótem</td>
+      <td><span class="per per-b">🟣 Cont.</span></td><td>Juan Pablo / Hecvan</td>
+      <td style="text-align:center">7</td><td style="text-align:center;color:var(--green-m)">3</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-blue" style="width:30%"></div></div><span class="pn" style="color:var(--blue-m)">30%</span></div></td>
+      <td><span class="st st-c">En curso</span></td>
+      <td><span style="font-size:10px;color:var(--muted)">Vence abr 2026</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/32358203d2c38052a828d6196437ad71" target="_blank">↗</a></td>
+    </tr>
+    <tr class="both-row">
+      <td><b>M2</b></td><td>Control de Menús en el Merchant Panel</td>
+      <td><span class="per per-b">🟣 Cont.</span></td><td>Juan Pablo / Roy</td>
+      <td style="text-align:center">8</td><td style="text-align:center;color:var(--green-m)">3</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-green" style="width:90%"></div></div><span class="pn" style="color:var(--green-m)">90%</span></div></td>
+      <td><span class="st st-ok">Casi listo</span></td>
+      <td><span class="dr-pill dr-over">5d vencida</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/32358203d2c380079711c3cc876ac050" target="_blank">↗</a></td>
+    </tr>
+    <tr class="march-row">
+      <td><b>M3</b></td><td>Integración con Tu Gerente (Resto Tech)</td>
+      <td><span class="per per-m">🟡 Mar</span></td><td>Juan Pablo</td>
+      <td style="text-align:center">—</td><td style="text-align:center;color:var(--red-m)">0</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-red" style="width:0%"></div></div><span class="pn" style="color:var(--red-m)">0%</span></div></td>
+      <td><span class="st st-r">Sin avance</span></td>
+      <td><span style="font-size:10px;color:var(--red-m)">Sin fecha</span></td>
+      <td>—</td>
+    </tr>
+    <tr class="april-row">
+      <td><b>M4</b></td><td>Bots Vikingo — Adaptación flujo numérico</td>
+      <td><span class="per per-a">🔵 Abr</span></td><td>Darwin Israel</td>
+      <td style="text-align:center">5</td><td style="text-align:center;color:var(--amber-m)">0</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-amber" style="width:80%"></div></div><span class="pn" style="color:var(--amber-m)">80%</span></div></td>
+      <td><span class="st st-c">En curso</span></td>
+      <td><span class="dr-pill dr-warn">3d restantes</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/32358203d2c380528690f8803fc17b89" target="_blank">↗</a></td>
+    </tr>
+    <tr class="march-row">
+      <td><b>M5</b></td><td>Bots Sushi Tower</td>
+      <td><span class="per per-m">🟡 Mar</span></td><td>Darwin Israel</td>
+      <td style="text-align:center">1</td><td style="text-align:center;color:var(--teal-m)">—</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-teal" style="width:100%"></div></div><span class="pn" style="color:var(--teal-m)">100%*</span></div></td>
+      <td><span class="st st-h">Terminado*</span></td>
+      <td><span class="dr-pill dr-over">15d vencida</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/32358203d2c380918508e189072adc2c" target="_blank">↗</a></td>
+    </tr>
+    <tr class="march-row">
+      <td><b>M6</b></td><td>Publicar "Z" iOS / Mejoras App EnZ</td>
+      <td><span class="per per-b">🟣 Cont.</span></td><td>Hecvan Zabala</td>
+      <td style="text-align:center">3</td><td style="text-align:center;color:var(--green-m)">1</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-amber" style="width:40%"></div></div><span class="pn" style="color:var(--amber-m)">40%</span></div></td>
+      <td><span class="st st-p">Parcial</span></td>
+      <td><span class="dr-pill dr-over">5d vencida</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/32358203d2c380f29b80c6d134445912" target="_blank">↗</a></td>
+    </tr>
+    <tr class="march-row">
+      <td><b>M7</b></td><td>Integración con Emizor (facturación)</td>
+      <td><span class="per per-m">🟡 Mar</span></td><td>Juan Pablo</td>
+      <td style="text-align:center">3</td><td style="text-align:center;color:var(--red-m)">0</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-red" style="width:0%"></div></div><span class="pn" style="color:var(--red-m)">0%</span></div></td>
+      <td><span class="st st-r">Sin avance</span></td>
+      <td><span style="font-size:10px;color:var(--red-m)">Sin fechas asignadas</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/32358203d2c3804ba3bde0d22b22f661" target="_blank">↗</a></td>
+    </tr>
+    <tr class="both-row">
+      <td><b>M8</b></td><td>MVP RobotoTem Cofi (KIOSKBOT)</td>
+      <td><span class="per per-b">🟣 Cont.</span></td><td>Darwin Israel → Benjamín</td>
+      <td style="text-align:center">22</td><td style="text-align:center;color:var(--green-m)">11</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-purple" style="width:60%"></div></div><span class="pn" style="color:var(--purple-m)">60%</span></div></td>
+      <td><span class="st st-c">En curso</span></td>
+      <td><span class="dr-pill dr-over">12d vencida</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/32358203d2c380ea862bcd61ceb3a453" target="_blank">↗</a></td>
+    </tr>
+    <tr class="march-row">
+      <td><b>M9</b></td><td>MVP Tótem USA con Stripe</td>
+      <td><span class="per per-b">🟣 Cont.</span></td><td>Juan Pablo</td>
+      <td style="text-align:center">0</td><td style="text-align:center;color:var(--red-m)">0</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-red" style="width:10%"></div></div><span class="pn" style="color:var(--red-m)">10%</span></div></td>
+      <td><span class="st st-r">Sin subtareas</span></td>
+      <td><span style="font-size:10px;color:var(--red-m)">Sin fecha</span></td>
+      <td>—</td>
+    </tr>
+    <tr style="background:#fffde7;">
+      <td><b>M10</b></td><td>⛔ Migración del Server — NO ESTÁ EN NOTION</td>
+      <td><span class="per per-b">🟣 Cont.</span></td><td>Por definir</td>
+      <td style="text-align:center">—</td><td style="text-align:center">—</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-amber" style="width:80%"></div></div><span class="pn" style="color:var(--amber-m)">80%</span></div></td>
+      <td><span class="st st-n">Crear</span></td>
+      <td><span style="font-size:10px;color:var(--amber-m)">Exigir informe</span></td>
+      <td>—</td>
+    </tr>
+    <tr class="both-row">
+      <td><b>M11</b></td><td>Configurar 6 Tótems Grupo Wender</td>
+      <td><span class="per per-b">🟣 Cont.</span></td><td>Hecvan / Juan Pablo</td>
+      <td style="text-align:center">5</td><td style="text-align:center;color:var(--green-m)">2</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-teal" style="width:52%"></div></div><span class="pn" style="color:var(--teal-m)">52%</span></div></td>
+      <td><span class="st st-c">Bloqueado</span></td>
+      <td><span class="dr-pill dr-ok">7d restantes</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/32358203d2c380f2a7d1c53de492d0fe" target="_blank">↗</a></td>
+    </tr>
+    <tr class="march-row">
+      <td><b>M12</b></td><td>Termina Tótems Bancard Paraguay</td>
+      <td><span class="per per-m">🟡 Mar</span></td><td>Hecvan / Miguel Valdez</td>
+      <td style="text-align:center">1</td><td style="text-align:center;color:var(--red-m)">0</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-red" style="width:0%"></div></div><span class="pn" style="color:var(--red-m)">0%</span></div></td>
+      <td><span class="st st-c">En curso</span></td>
+      <td><span class="dr-pill dr-over">12d vencida</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/32358203d2c3806f9a91cc7617f89fcc" target="_blank">↗</a></td>
+    </tr>
+    <tr class="march-row">
+      <td><b>M13</b></td><td>Recibir Doc. y Entrenamiento de Todo</td>
+      <td><span class="per per-m">🟡 Mar</span></td><td>Hecvan Zabala</td>
+      <td style="text-align:center">1</td><td style="text-align:center;color:var(--amber-m)">0*</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-green" style="width:80%"></div></div><span class="pn" style="color:var(--green-m)">80%</span></div></td>
+      <td><span class="st st-c">En curso</span></td>
+      <td><span class="dr-pill dr-over">12d vencida</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/32558203d2c3805f8f98cefc9928e8cc" target="_blank">↗</a></td>
+    </tr>
+    <tr class="april-row">
+      <td><b>M14</b></td><td>Añadir Seguridad en la Página de los Bots</td>
+      <td><span class="per per-a">🔵 Abr</span></td><td>Darwin Israel</td>
+      <td style="text-align:center">1</td><td style="text-align:center;color:var(--red-m)">0</td>
+      <td><div class="bc"><div class="bt"><div class="bf bg-blue" style="width:0%"></div></div><span class="pn" style="color:var(--blue-m)">0%</span></div></td>
+      <td><span class="st st-r">Por hacer</span></td>
+      <td><span class="dr-pill dr-ok">7d restantes</span></td>
+      <td><a class="nl" href="https://www.notion.so/motoclickapp/33558203d2c3809a930fea857a4a40da" target="_blank">↗</a></td>
+    </tr>
+    <!-- NUEVOS GERENCIA -->
+    <tr class="new-row"><td><b>G1</b></td><td>Sistema de tótems con módulo de menús independiente</td><td><span class="per per-new">🟢 NUEVO</span></td><td>Por asignar</td><td style="text-align:center">—</td><td style="text-align:center">—</td><td><div class="bc"><div class="bt"><div class="bf bg-green" style="width:0%"></div></div><span class="pn" style="color:var(--green-m)">—</span></div></td><td><span class="st st-n">Sin iniciar</span></td><td><span style="font-size:10px;color:var(--muted)">Abr 2026</span></td><td>—</td></tr>
+    <tr class="new-row"><td><b>G2</b></td><td>Actualizar integración con Resto Tech</td><td><span class="per per-new">🟢 NUEVO</span></td><td>Por asignar</td><td style="text-align:center">—</td><td style="text-align:center">—</td><td><div class="bc"><div class="bt"><div class="bf bg-green" style="width:0%"></div></div><span class="pn">—</span></div></td><td><span class="st st-n">Sin iniciar</span></td><td><span style="font-size:10px;color:var(--muted)">Abr 2026</span></td><td>—</td></tr>
+    <tr class="new-row"><td><b>G3</b></td><td>Entregar el bot de Kiky y Hugo Pizza</td><td><span class="per per-new">🟢 NUEVO</span></td><td>Por asignar</td><td style="text-align:center">—</td><td style="text-align:center">—</td><td><div class="bc"><div class="bt"><div class="bf bg-green" style="width:0%"></div></div><span class="pn">—</span></div></td><td><span class="st st-n">Sin iniciar</span></td><td><span style="font-size:10px;color:var(--muted)">Abr 2026</span></td><td>—</td></tr>
+    <tr class="new-row"><td><b>G4</b></td><td>Terminar MVP robot cajero para Cofi</td><td><span class="per per-new">🟢 NUEVO</span></td><td>Por asignar</td><td style="text-align:center">—</td><td style="text-align:center">—</td><td><div class="bc"><div class="bt"><div class="bf bg-green" style="width:0%"></div></div><span class="pn">—</span></div></td><td><span class="st st-n">Sin iniciar</span></td><td><span style="font-size:10px;color:var(--muted)">Abr 2026</span></td><td>—</td></tr>
+    <tr class="new-row"><td><b>G5</b></td><td>MVP Tótem USA con Stripe (EE.UU.)</td><td><span class="per per-new">🟢 NUEVO</span></td><td>Por asignar</td><td style="text-align:center">—</td><td style="text-align:center">—</td><td><div class="bc"><div class="bt"><div class="bf bg-green" style="width:0%"></div></div><span class="pn">—</span></div></td><td><span class="st st-n">Sin iniciar</span></td><td><span style="font-size:10px;color:var(--muted)">Abr 2026</span></td><td>—</td></tr>
+    <tr class="new-row"><td><b>G6</b></td><td>Empezar desarrollo modo offline para tótem</td><td><span class="per per-new">🟢 NUEVO</span></td><td>Por asignar</td><td style="text-align:center">—</td><td style="text-align:center">—</td><td><div class="bc"><div class="bt"><div class="bf bg-green" style="width:0%"></div></div><span class="pn">—</span></div></td><td><span class="st st-n">Sin iniciar</span></td><td><span style="font-size:10px;color:var(--muted)">Abr 2026</span></td><td>—</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 3: DETALLE DE CONTINUACIÓN MARZO → ABRIL
+     ══════════════════════════════════════════════════════════ -->
+<div class="slabel">Detalle por objetivo — continuación Marzo → Abril (subtareas reales de Notion)</div>
+<div class="ogrid">
+
+  <!-- M1 -->
+  <div class="oc lboth n1">
+    <div class="oh"><div class="on">M1</div><div class="otb"><div class="ot">Migrar completamente sistemas Tótem</div><div class="om">@Juan Pablo · @Hecvan <span class="per per-b">🟣 Cont. Mar→Abr</span></div></div><div class="op">30%</div></div>
+    <div class="obar"><div class="bt" style="width:100%"><div class="bf bg-blue" style="width:30%"></div></div></div>
+    <div class="cont-note">🟣 Continuación: Inició en Marzo. Continúa en Abril con 4 subtareas críticas aún pendientes.</div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Tótem multilenguaje <span class="tpct">100% ✓</span></span><span class="dr-pill dr-over">18d vencida</span></li>
+      <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Configurar Totem Admin y Backend <span class="tpct">100% ✓</span></span><span class="dr-pill dr-over">5d vencida</span></li>
+      <hr class="divr">
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Ecosistema REACT con acceso admin integral <span class="tpct">0%</span></span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Probar migración Webhook Resto Tech → Merchant Backend <span class="tpct">0%</span></span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Tótem consumir menús de su propio ecosistema <span class="tpct">0%</span></span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Probar ecosistema independiente de Patio Service <span class="tpct">0%</span></span></li>
+    </ul>
+  </div>
+
+  <!-- M2 -->
+  <div class="oc lboth n2">
+    <div class="oh"><div class="on">M2</div><div class="otb"><div class="ot">Control de Menús en el Merchant Panel</div><div class="om">@Juan Pablo → deploy: @Roy Villarroel <span class="per per-b">🟣 Cont.</span></div></div><div class="op">90%</div></div>
+    <div class="obar"><div class="bt" style="width:100%"><div class="bf bg-green" style="width:90%"></div></div></div>
+    <div class="cont-note">🟣 Inició y casi completó en Marzo. Bloqueado en deploy desde el 3 de abril.</div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Crear endpoints de apoyo para órdenes <span class="tpct">100%</span></span></li>
+      <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Mejorar UI/UX en Merchant Panel Flutter <span class="tpct">100%</span></span></li>
+      <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Consumo de información estructurada del menú <span class="tpct">100%</span></span></li>
+      <li class="tr"><span class="td2 dr"></span><span class="tx-alert">Probar los Menús <span class="tpct">0%</span></span><span class="dr-pill dr-over">14d vencida</span></li>
+      <li class="tr"><span class="td2 da"></span><span class="tx-warn">Subir a prod — @Roy Villarroel [en PR]</span><span class="dr-pill dr-over">5d vencida</span></li>
+    </ul>
+  </div>
+
+  <!-- M4 -->
+  <div class="oc lapril n4">
+    <div class="oh"><div class="on">M4</div><div class="otb"><div class="ot">Bots Vikingo — Adaptación flujo numérico</div><div class="om">@Darwin Israel · ⚠ Horario reducido <span class="per per-a">🔵 Abr</span></div></div><div class="op">80%</div></div>
+    <div class="obar"><div class="bt" style="width:100%"><div class="bf bg-amber" style="width:80%"></div></div></div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 da"></span><span class="tx-p">Máquina de estado completa (conversión numérica) <span class="tpct">30%</span></span><span class="dr-pill dr-warn">3d restantes</span></li>
+      <li class="tr"><span class="td2 da"></span><span class="tx-p">Regex de validación numérica <span class="tpct">15%</span></span><span class="dr-pill dr-warn">3d restantes</span></li>
+      <li class="tr"><span class="td2 da"></span><span class="tx-p">Rango y limitantes validación de pedidos <span class="tpct">40%</span></span><span class="dr-pill dr-warn">3d restantes</span></li>
+      <li class="tr"><span class="td2 da"></span><span class="tx-p">Rechazo de archivos multimedia <span class="tpct">0%</span></span><span class="dr-pill dr-warn">3d restantes</span></li>
+      <li class="tr"><span class="td2 da"></span><span class="tx-p">API null/fallback <span class="tpct">30%</span></span><span class="dr-pill dr-warn">3d restantes</span></li>
+      <li class="tr"><span class="td2 dr"></span><span class="tx-alert">⚠ Horario: Lun/Mié/Vie 7–10pm · Sáb 9am–1pm</span></li>
+    </ul>
+  </div>
+
+  <!-- M6 -->
+  <div class="oc lboth n6">
+    <div class="oh"><div class="on">M6</div><div class="otb"><div class="ot">Publicar "Z" iOS / Mejoras App EnZ</div><div class="om">@Hecvan Zabala · Dos entradas en Notion <span class="per per-b">🟣 Cont.</span></div></div><div class="op">40%</div></div>
+    <div class="obar"><div class="bt" style="width:100%"><div class="bf bg-amber" style="width:40%"></div></div></div>
+    <div class="cont-note">🟣 Play Store completado en Marzo. iOS y notificaciones quedan pendientes para Abril.</div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Subir cambios de la App a Play Store <span class="tpct">100% ✓</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+      <li class="tr"><span class="td2 dr"></span><span class="tx-alert">Notificaciones Duplicadas Driver/Taxi <span class="tpct">0%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+      <li class="tr"><span class="td2 dr"></span><span class="tx-alert">Solicitar cuenta desarrollador iOS <span class="tpct">0%</span></span><span class="dr-pill dr-over">5d vencida</span></li>
+    </ul>
+  </div>
+
+  <!-- M7 -->
+  <div class="oc lrisk n7">
+    <div class="oh"><div class="on">M7</div><div class="otb"><div class="ot">Integración con Emizor (facturación local)</div><div class="om">@Juan Pablo · 0% · Sin responsable en subtareas <span class="per per-m">🟡 Mar</span></div></div><div class="op">0%</div></div>
+    <div class="obar"><div class="bt" style="width:100%"><div class="bf bg-red" style="width:0%"></div></div></div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 dr"></span><span class="tx-alert">3 subtareas sin responsable, sin fecha, sin avance</span></li>
+      <li class="tr"><span class="td2 dg"></span><span class="tx-p">Solicitud de repos y doc de Emizor</span></li>
+      <li class="tr"><span class="td2 dg"></span><span class="tx-p">Análisis del payment gateway</span></li>
+      <li class="tr"><span class="td2 dg"></span><span class="tx-p">Creación de facturación basada en gateway</span></li>
+    </ul>
+  </div>
+
+  <!-- M8 KIOSKBOT - full width -->
+  <div class="oc lboth n8 full">
+    <div class="oh"><div class="on">M8</div><div class="otb"><div class="ot">MVP RobotoTem Cofi (KIOSKBOT)</div><div class="om">@Darwin Israel → capacitación a @Benjamín · <span style="color:var(--red-m)">11 subtareas vencidas</span> <span class="per per-b">🟣 Cont.</span></div></div><div class="op">60%</div></div>
+    <div class="obar"><div class="bt" style="width:100%"><div class="bf bg-purple" style="width:60%"></div></div></div>
+    <div class="cont-note">🟣 Inició en Marzo. Continúa en Abril. La mayoría de subtareas vencieron el 27 mar / 3 abr. Requiere revisión urgente de fechas y capacitación Darwin → Benjamín.</div>
+    <div class="two-col">
+      <ul class="tl">
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Lógica saludo y despedida <span class="tpct">100%</span></span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Amplitud de luz al detectar voz <span class="tpct">100%</span></span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Background general para todas las vistas <span class="tpct">100%</span></span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Revisión tótem y prueba arduino Linux <span class="tpct">100%</span></span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Modificar código arduino del tótem <span class="tpct">100%</span></span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Instalación entorno de desarrollo <span class="tpct">100%</span></span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Quitar solicitud de Login al encender <span class="tpct">100%</span></span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Cambio de jerga al motor de audio <span class="tpct">100%</span></span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Emoción pingpong sin detección de cliente <span class="tpct">100%</span></span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Carrito para confirmación visual <span class="tpct">100%</span></span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Observar sensores en el tótem <span class="tpct">100%</span></span></li>
+      </ul>
+      <ul class="tl">
+        <li class="tr"><span class="td2 da"></span><span class="tx-p">Integrar métodos de pagos <span class="tpct">80%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 da"></span><span class="tx-p">Integrar detalles y mejoras de escenario <span class="tpct">60%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 da"></span><span class="tx-p">Escenarios luego de confirmar pedido <span class="tpct">30%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 da"></span><span class="tx-p">Integrar POS para pagos <span class="tpct">30%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 da"></span><span class="tx-p">Integrar Impresora <span class="tpct">10%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 da"></span><span class="tx-p">Quitar botonera y limpiar interfaz <span class="tpct">0%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 da"></span><span class="tx-p">Métodos de recomendación según solicitud <span class="tpct">0%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 dg"></span><span class="tx-p">Realizar flujos mockup flow 2 (Lianny) <span class="tpct">0%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 dg"></span><span class="tx-p">Programar nuevos diseños <span class="tpct">0%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 dg"></span><span class="tx-p">Mejorar rendimiento en la Jetson <span class="tpct">0%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 dg"></span><span class="tx-p">Pruebas generales del flujo completo <span class="tpct">0%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 db"></span><span class="tx-new">Sesión transferencia conocimiento Darwin → Benjamín</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- M11 -->
+  <div class="oc lboth n11 full">
+    <div class="oh"><div class="on">M11</div><div class="otb"><div class="ot">Configurar 6 Tótems para Grupo Wender</div><div class="om">@Hecvan Zabala · @Juan Pablo · Bloqueado en dos frentes <span class="per per-b">🟣 Cont.</span></div></div><div class="op">52%</div></div>
+    <div class="obar"><div class="bt" style="width:100%"><div class="bf bg-teal" style="width:52%"></div></div></div>
+    <div class="two-col">
+      <ul class="tl">
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Creación comercio en BD (Grupo Wender) <span class="tpct">100%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 dg2"></span><span class="tx-done">Realizar orden con credenciales de prueba <span class="tpct">100%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+        <li class="tr"><span class="td2 da"></span><span class="tx-p">Instalación del nuevo merchant panel <span class="tpct">60%</span></span><span class="dr-pill dr-over">12d vencida</span></li>
+      </ul>
+      <ul class="tl">
+        <li class="tr"><span class="td2 dr"></span><span class="tx-alert">Prueba conexión tótem con POS <span class="tpct">0%</span></span><span class="dr-pill dr-ok">7d restantes</span>
+          <span class="tnote">Bloqueado: esperando los POS para configurar.</span></li>
+        <li class="tr"><span class="td2 dr"></span><span class="tx-alert">Realizar orden con comercio oficial Wender <span class="tpct">0%</span></span><span class="dr-pill dr-ok">7d restantes</span>
+          <span class="tnote">Bloqueado: esperando impresoras. Tótem ya configurado.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- M10 -->
+  <div class="oc lrisk n10">
+    <div class="oh"><div class="on">M10</div><div class="otb"><div class="ot">Migración del Server <span style="font-size:9px;background:#ffe082;color:#5d4037;padding:1px 6px;border-radius:7px;font-weight:700;margin-left:4px">⛔ Crear en Notion</span></div><div class="om">Sin responsable · Reportado 80% verbal <span class="per per-b">🟣 Cont.</span></div></div><div class="op">80%</div></div>
+    <div class="obar"><div class="bt" style="width:100%"><div class="bf bg-amber" style="width:80%"></div></div></div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 dr"></span><span class="tx-alert">Objetivo ausente de Notion — ni CSV, ni PDF</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Solicitar informe de estado actual urgente</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Documentar configuración del nuevo server</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Pruebas y validación del server migrado</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Asignar responsable principal</span></li>
+    </ul>
+  </div>
+
+  <!-- M9 -->
+  <div class="oc lrisk n9">
+    <div class="oh"><div class="on">M9</div><div class="otb"><div class="ot">MVP Tótem USA con Stripe</div><div class="om">@Juan Pablo · Sin subtareas en Notion <span class="per per-b">🟣 Cont.</span></div></div><div class="op">10%</div></div>
+    <div class="obar"><div class="bt" style="width:100%"><div class="bf bg-red" style="width:10%"></div></div></div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 dr"></span><span class="tx-alert">Objetivo registrado pero sin subtareas activas</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Configurar integración Stripe en entorno de prueba</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Pruebas con cuenta Isle of Us (TOAST)</span></li>
+      <li class="tr"><span class="td2 db"></span><span class="tx-new">Completar MVP para validación comercial</span></li>
+    </ul>
+  </div>
+
+  <!-- M14 -->
+  <div class="oc lapril n14">
+    <div class="oh"><div class="on">M14</div><div class="otb"><div class="ot">Añadir Seguridad en la Página de los Bots</div><div class="om">@Darwin Israel · Fecha: ~15 abr 2026 <span class="per per-a">🔵 Abr</span></div></div><div class="op">0%</div></div>
+    <div class="obar"><div class="bt" style="width:100%"><div class="bf bg-blue" style="width:0%"></div></div></div>
+    <ul class="tl">
+      <li class="tr"><span class="td2 dg"></span><span class="tx-p">Poner contraseñas al panel del cliente <span class="tpct">0%</span></span><span class="dr-pill dr-ok">7d restantes</span></li>
+    </ul>
+  </div>
+
+</div><!-- /ogrid detail -->
+
+<div class="rf">
+  <span>Fuente: Notion CSV (32058203d2c380ee) · PDF Objetivos Gerencia Nexus · Hardware Report 24–28 Mar 2026 · Reporte verbal 8 abr 2026</span>
+  <span>Generado: 8 abr 2026 · v3</span>
+</div>
+
+</body>
+</html>
